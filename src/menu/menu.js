@@ -1,34 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { UserInfo } from "./components/userInfo";
 
 export class Menu extends Component {
   render() {
     return (
-      <div className="col-sm page-wrapper chiller-theme toggled">
+      <div className="page-wrapper chiller-theme toggled">
         <nav id="sidebar" className="sidebar-wrapper">
             <div className="sidebar-content">
-                <div id="toggle-sidebar">
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                <div>
+                    <img className="w-100 p-2" src={require('../images/logo.png')} alt=""/>
                 </div>
-                <div className="sidebar-brand">
-                    <a href="/">art exchange</a>
-                </div>
-                <div className="sidebar-header">
-                    <div className="user-pic">
-                        <img className="img-responsive img-rounded"  src={require('../images/user_icon.jpg')} alt="User icon"/>
-                    </div>
-                    <div className="user-info">
-                        <span className="user-name">Jhon
-                            <strong>Smith</strong>
-                        </span>
-                        <span className="user-role">Administrator</span>
-                        <span className="user-status">
-                            <i className="fa fa-circle"></i>
-                            <span>Online</span>
-                        </span>
-                    </div>
+                <div>
+                    <UserInfo/>
                 </div>
                 <div className="sidebar-search">
                     <div>
@@ -45,109 +29,46 @@ export class Menu extends Component {
                 <div className="sidebar-menu">
                     <ul>
                         <li className="header-menu">
-                          <Link to="/rest">REST</Link>
+                        <Link to="/"><i className='far fa-address-book'></i>Main</Link>
                         </li>
                         <li className="header-menu">
-                        <Link to="/">IFPS</Link>
+                        <Link to="/filesender"><i className='fas fa-file-export'></i>Send File</Link>
+                        </li>
+                        <li className="header-menu">
+                        <Link to="/transactionSender"><i className='fab fa-ethereum' style={{color:'white'}}></i>Send Transaction</Link>
                         </li>
                         <li className="sidebar-dropdown">
-                            <a href="/">
-                                <i className="fa fa-shopping-cart"></i>
-                                <span>E-commerce</span>
+                            <a>
+                            <span><i className='far fa-clipboard'></i>Contracts</span>
                             </a>
                             <div className="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="/">Products
-                                            
-                                        </a>
+                                        <Link to="/recieveFiles?type=SEND"><i className='far fa-paper-plane'></i>Sended</Link>
                                     </li>
                                     <li>
-                                        <a href="/">Orders</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Credit cart</a>
+                                        <Link to="/recieveFiles?type=RECEIVE"><i className='far fa-envelope-open'></i>Recieved</Link>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                         <li className="sidebar-dropdown">
-                            <a href="/">
-                                <i className="far fa-gem"></i>
-                                <span>Components</span>
+                            <a>
+                            <span><i className='fas fa-exchange-alt'></i> Transactions</span>   
                             </a>
                             <div className="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="/">General</a>
+                                        <Link to="/recieveTrx?type=SEND"><i className='far fa-paper-plane'></i>Sended</Link>
                                     </li>
                                     <li>
-                                        <a href="/">Panels</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Tables</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Icons</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Forms</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li className="sidebar-dropdown">
-                            <a href="/">
-                                <i className="fa fa-chart-line"></i>
-                                <span>Charts</span>
-                            </a>
-                            <div className="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="/">Pie chart</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Line chart</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Bar chart</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Histogram</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li className="sidebar-dropdown">
-                            <a href="/">
-                                <i className="fa fa-globe"></i>
-                                <span>Maps</span>
-                            </a>
-                            <div className="sidebar-submenu">
-                                <ul>
-                                    <li>
-                                        <a href="/">Google maps</a>
-                                    </li>
-                                    <li>
-                                        <a href="/">Open street map</a>
+                                        <Link to="/recieveTrx?type=RECEIVE"><i className='far fa-envelope-open'></i>Recieved</Link>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                         <li className="header-menu">
                             <span>Extra</span>
-                        </li>
-                        <li>
-                            <a href="/">
-                                <i className="fa fa-calendar"></i>
-                                <span>Calendar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/">
-                                <i className="fa fa-folder"></i>
-                                <span>Examples</span>
-                            </a>
                         </li>
                         <li>
                             <a href="/">

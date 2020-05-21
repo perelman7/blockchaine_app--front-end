@@ -1,40 +1,70 @@
-import React from 'react';
-import axios from 'axios';
+import { JwtParserService } from "../jwtParser/jwtParser";
+import axios from "axios";
 
-export class RestServiceApi extends React.Component {
-    render() {
-      return (
-        <div>
-          <button onClick={this.handleClick}>
-            send get request
-          </button>
-          <button onClick={this.handlePost}>
-              send post request
-          </button>
-        </div>
-      );
-    }
+export class RestServiceApi{
 
-    handleClick(){
-        console.log('Send get request')
-        axios.get('http://localhost:8080/api/getting')
-        .then(function(response) {
-            console.log('Status: ' + response.status + ', data: ' + response.data);
-        })
-        .catch(function(error){
-            console.log(error);
-        });
+    getAllTransactions(type){
+        this.init();
+        console.log('Send get request');
+        let url = "http://localhost:8015/block/all?privateKey=" + this.privateKey  + "&typeRequest=" + type;
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, false);
+        xhr.setRequestHeader('Authorization', this.jwtHeader);
+        xhr.setRequestHeader('Access-Control-Allow-Origin', "*")
+        xhr.setRequestHeader('Access-Control-Allow-Methods', "*")
+        xhr.setRequestHeader('Access-Control-Allow-Headers', "*")
+        xhr.setRequestHeader('Cross-Origin-Allow-Credentials', 'True');
+        
+        console.log(xhr.requestHeaders);
+        xhr.send();
+        if(xhr.status === 200){
+            return JSON.parse(xhr.response).transactions;
+        }else{
+            alert("Status : " + xhr.status)
+            return [];
+        }
     }
     
-    handlePost(){
-        console.log('Send post request')
+    getAllFiles(type){
+        this.init();
+        console.log('Send post request');
+        let url = "http://localhost:8015/block/all?privateKey="+ this.privateKey + "&typeRequest=" + type;
 
-        axios.post('http://localhost:8080/api/post')
-        .then(function(response) {
-            console.log('Status: ' + response.status + ', data: ' + response.data);
-        })
-        .catch(function(error){
-            console.log(error);
-        });
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, false);
+        xhr.setRequestHeader('Authorization', this.jwtHeader);
+        xhr.send();
+        if(xhr.status === 200){
+            return JSON.parse(xhr.response).contracts;
+        }else{
+            alert("Status : " + xhr.status)
+            return [];
+        }
+    }
+
+    loginRequest(username, password){
+        let url = "http://localhost:8015/auth/log-in";
+        var body = {
+            accountAddress: username,
+            password: password
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, false);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(body));
+        alert(xhr.response);
+        if(xhr.status === 200){
+            return xhr.response;
+        }else{
+            console.log("Status: " + xhr.status);
+            return [];
+        }
+    }
+
+    init(){
+        var jwt = window.sessionStorage.getItem("jwt");
+        this.privateKey = new JwtParserService().parsePrivateKey(jwt);
+        this.jwtHeader = "Bearer " + jwt;
     }
   }

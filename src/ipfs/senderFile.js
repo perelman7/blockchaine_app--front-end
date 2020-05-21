@@ -1,7 +1,7 @@
 import React from 'react';
 import ipfs from './ipfs'
 
-export class IpfsService extends React.Component {
+export class SenderFile extends React.Component {
 
     constructor(props) {
         super(props)
@@ -51,11 +51,33 @@ export class IpfsService extends React.Component {
                       <p>This image is stored on IPFS & The Ethereum Blockchain!</p>
                       {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt=""/> */}
                       <img src={`http://localhost:8080/ipfs/${this.state.ipfsHash}`} alt=""/>
+                      <span className="border border-primary">
                       <h2>Upload Image</h2>
+                      
                       <form onSubmit={this.onSubmit} >
-                        <input type='file' onChange={this.captureFile} />
-                        <input type='submit' />
+                        <div className="form-group">
+                          <label for="recipient_address">Recipient address</label>
+                          <input type="text" className="form-control" id="recipient_address" placeholder="Enter recipient address"/>
+                        </div>
+                        <div className="form-group">
+                          <label for="description">Description</label>
+                          <input type="text" className="form-control" id="description" placeholder="Description"/>
+                        </div>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                          </div>
+                          <div className="custom-file">
+                            <input type="file" className="custom-file-input" id="inputGroupFile01"
+                              aria-describedby="inputGroupFileAddon01" onChange={this.captureFile}/>
+                            <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                          </div>
+                        </div>
+                        <div class="form-check mt-2">
+                          <button type="submit" className="btn btn-primary">Submit</button>
+                        </div>
                       </form>
+                      </span>
                     </div>
                   </div>
                 </main>
