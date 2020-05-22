@@ -50,6 +50,45 @@ export class RestServiceApi{
         }
     }
 
+    sendTransaction(account, amount){
+        this.init();
+        let url = "http://localhost:8015/transaction/send";
+        let body = {
+            privateKeySender: this.privateKey,
+            accountRecipient: account,
+            amount: amount
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, false);
+        this.initHeaders(xhr);
+        xhr.send(JSON.stringify(body));
+        console.log("Status : " + xhr.status);
+    }
+
+    sendFile(fileName, fileType, filePath, desc, recipient){
+        this.init();
+        let url = "http://localhost:8015/contract/deploy";
+        let body = {
+            privateKey: this.privateKey,
+            description: desc,
+            recipient: recipient,
+            fileInfo: {
+                name: fileName,
+                path: filePath,
+                extension: fileType
+            }
+        };
+
+        alert(JSON.stringify(body));
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, false);
+        this.initHeaders(xhr);
+        xhr.send(JSON.stringify(body));
+        console.log("Status : " + xhr.status);
+    }
+
     loginRequest(username, password){
         let url = "http://localhost:8015/auth/log-in";
         var body = {
@@ -80,5 +119,6 @@ export class RestServiceApi{
         xhr.setRequestHeader('Access-Control-Allow-Methods', "*")
         xhr.setRequestHeader('Access-Control-Allow-Headers', "*")
         xhr.setRequestHeader('Cross-Origin-Allow-Credentials', 'True');
+        xhr.setRequestHeader('Content-Type', 'application/json');
     }
   }

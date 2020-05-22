@@ -10,21 +10,20 @@ export class RecieverTransaction extends React.Component {
 
         var title;
         if(type === "SEND"){
-            title = "Sended files";
+            title = "Sended transactions";
         }else{
-            title = "Recived files";
+            title = "Recived transactions";
         }
 
         let allTransactions = new RestServiceApi().getAllTransactions(type);
         
         console.log("Result get all trxs: ", JSON.stringify(allTransactions));
         let tableData = null;
-        tableData = <table className="table">
+        tableData = <table className="table table-secondary">
             <thead className="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Sender</th>
-                    <th scope="col">Recipient</th>
+                    {type === 'SEND' ? <th scope="col">Recipient</th> : <th scope="col">Sender</th>}
                     <th scope="col">Amount</th>
                     <th scope="col">Block number</th>
                     <th scope="col">Hash</th>
@@ -34,8 +33,7 @@ export class RecieverTransaction extends React.Component {
                 {allTransactions.map( (row, index) => (
                     <tr key={index}>
                         <th scope="col">{index + 1}</th>
-                        <th scope="col">{row.sender}</th>
-                        <th scope="col">{row.recipient}</th>
+                        {type === 'SEND' ? <th scope="col">{row.recipient}</th> : <th scope="col">{row.sender}</th>}
                         <th scope="col">{row.amount}</th>
                         <th scope="col">{row.blockNumber}</th>
                         <th scope="col">{row.trxHash}</th>
@@ -47,7 +45,7 @@ export class RecieverTransaction extends React.Component {
 
         return (
             <div className="col">
-                <h1>
+                <h1 className="text-white">
                     {title}
                 </h1>
                 {tableData}

@@ -26,20 +26,20 @@ export class SenderTransaction extends React.Component {
     }
 
     onSubmit(){
-        alert(this.state.selectedAccount + " : " + this.state.amount);
+        new RestServiceApi().sendTransaction(this.state.selectedAccount, this.state.amount);
     }
 
     generaSelectTag(){
         return (
             <div class="col-sm-10">
                 <select class="form-control" onChange={this.handleAccount} value={this.state.selectedAccount}>
+                    <option id={-1}>Select account</option>
                     {this.state.listAccounts.map( (row, index) => (
                         <option id={index}>{row}</option>
                     ))}
                 </select>          
             </div>
         );
-        
     }
 
     render(){
@@ -53,7 +53,7 @@ export class SenderTransaction extends React.Component {
                         {this.generaSelectTag()}
                     </div>
                     <div className="form-group">
-                        <label className="text-white m-6 col-sm-2 col-form-label">Amount</label>
+                        <label className="text-white m-6 col-sm-2 col-form-label">Amount ETH</label>
                         <div className="col-sm-10">
                             <input type="number" className="form-control" placeholder="amount" value={this.state.amount} onChange={this.handleAmount}/>
                         </div>

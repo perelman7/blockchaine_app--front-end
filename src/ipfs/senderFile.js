@@ -1,39 +1,70 @@
 import React from 'react';
-import ipfs from './ipfs'
+import ipfs from './ipfs';
+import { RestServiceApi } from "../rest/restService";
 
 export class SenderFile extends React.Component {
 
     constructor(props) {
         super(props)
-    
+        var allAccounts = new RestServiceApi().getAllAccounts();
+
         this.state = {
-          ipfsHash: '',
-          buffer: null,
+          content: null,
+          filename: '',
+          fileType: '',
+          listAccounts : allAccounts,
+          selectedAccount : '',
+          description: '',
         }
-        this.captureFile = this.captureFile.bind(this);
+        this.handleFile = this.handleFile.bind(this);
+        this.handleAccount = this.handleAccount.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
       }
+
+      handleAccount(action){
+        this.setState({selectedAccount: action.target.value});
+      }
+
+      handleDescription(action){
+        this.setState({description: action.target.value});
+      }
     
-      captureFile(event) {
-        event.preventDefault();
+      handleFile(event) {
         const file = event.target.files[0];
         console.log("File: ", file.name, file.type);
         const reader = new window.FileReader();
         reader.readAsArrayBuffer(file);
         reader.onloadend = () => {
-          this.setState({ buffer: Buffer(reader.result) });
-          console.log('buffer', this.state.buffer);
+          this.setState({ 
+            content: Buffer(reader.result),
+            filename: file.name,
+            fileType: file.type
+          });
         }
       }
     
       onSubmit(event) {
-        console.log("Submit ...")
-        event.preventDefault()
-        ipfs.add(this.state.buffer).next().then((res) => {
+        event.preventDefault();
+        ipfs.add(this.state.content).next().then((res) => {
           console.log(res.value.path);
-          this.setState({ipfsHash: res.value.path});
+          var filePath = res.value.path;
+          new RestServiceApi().sendFile(this.state.filename, this.state.fileType, filePath, this.state.description, this.state.selectedAccount);
         });
       }
+
+      generaSelectTag(){
+        return (
+            <div class="col-sm-10">
+                <select class="form-control" onChange={this.handleAccount} value={this.state.selectedAccount}>
+                    <option id={-1}>Select account</option>
+                    {this.state.listAccounts.map( (row, index) => (
+                        <option id={index}>{row}</option>
+                    ))}
+                </select>          
+            </div>
+        );
+    }
     
       render() {
         return (
@@ -41,7 +72,7 @@ export class SenderFile extends React.Component {
             <div className="col-sm">
               <div className="App">
                 <nav className="navbar pure-menu pure-menu-horizontal">
-                  <h1>IPFS File Upload DApp</h1>
+                  <h1 className="text-white">IPFS File Upload DApp</h1>
                 </nav>
         
                 <main className="container">
@@ -49,35 +80,38 @@ export class SenderFile extends React.Component {
                     <div className="pure-u-1-1">
                       <h1>Your Image</h1>
                       <p>This image is stored on IPFS & The Ethereum Blockchain!</p>
-                      {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt=""/> */}
                       <img src={`http://localhost:8080/ipfs/${this.state.ipfsHash}`} alt=""/>
-                      <span className="border border-primary">
-                      <h2>Upload Image</h2>
+                      
+                      <h2 className="text-white">Upload File</h2>
                       
                       <form onSubmit={this.onSubmit} >
                         <div className="form-group">
-                          <label for="recipient_address">Recipient address</label>
-                          <input type="text" className="form-control" id="recipient_address" placeholder="Enter recipient address"/>
+                            <label className="text-white m-6 col-sm-2 col-form-label">Accounts</label>
+                            {this.generaSelectTag()}
                         </div>
                         <div className="form-group">
-                          <label for="description">Description</label>
-                          <input type="text" className="form-control" id="description" placeholder="Description"/>
-                        </div>
-                        <div className="input-group">
-                          <div className="input-group-prepend">
-                            <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                          <label for="description" className="text-white m-6 col-sm-2 col-form-label">Description</label>
+                          <div class="col-sm-10">
+                            <input type="text" className="form-control" id="description" placeholder="Description" value={this.state.description} onChange={this.handleDescription}/>
                           </div>
-                          <div className="custom-file">
-                            <input type="file" className="custom-file-input" id="inputGroupFile01"
-                              aria-describedby="inputGroupFileAddon01" onChange={this.captureFile}/>
-                            <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                        <div class="col-sm-10">
+                          <div className="input-group ">
+                            <div className="input-group-prepend">
+                              <span className="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                            <div className="custom-file">
+                              <input type="file" className="custom-file-input" id="inputGroupFile01"
+                                aria-describedby="inputGroupFileAddon01" onChange={this.handleFile}/>
+                              <label className="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
                           </div>
                         </div>
                         <div class="form-check mt-2">
                           <button type="submit" className="btn btn-primary">Submit</button>
                         </div>
                       </form>
-                      </span>
+
                     </div>
                   </div>
                 </main>

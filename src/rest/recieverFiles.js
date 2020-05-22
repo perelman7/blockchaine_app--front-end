@@ -19,16 +19,13 @@ export class RecieverFiles extends React.Component {
         
         console.log("Result get all trxs: ", JSON.stringify(allFiles));
         let tableData = null;
-        tableData = <table className="table">
+        tableData = <table className="table table-secondary">
             <thead className="thead-dark">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Filename</th>
-                    <th scope="col">Filepath</th>
-                    <th scope="col">Extension</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Recipient</th>
-                    <th scope="col">Sender</th>
+                    {type === 'SEND' ? <th scope="col">Recipient</th> : <th scope="col">Sender</th>}
                     <th scope="col">Data</th>
                 </tr>
             </thead>
@@ -37,11 +34,8 @@ export class RecieverFiles extends React.Component {
                     <tr key={index}>
                         <th scope="col">{index + 1}</th>
                         <th scope="col">{row.filename}</th>
-                        <th scope="col">{row.filepath}</th>
-                        <th scope="col">{row.extension}</th>
                         <th scope="col">{row.description}</th>
-                        <th scope="col">{row.recipient}</th>
-                        <th scope="col">{row.sender}</th>
+                        {type === 'SEND' ? <th scope="col">{row.recipient}</th> : <th scope="col">{row.sender}</th>}
                         <th scope="col">{row.data}</th>
                     </tr>
                 ))}
@@ -51,7 +45,7 @@ export class RecieverFiles extends React.Component {
 
         return (
             <div className="col">
-                <h1>
+                <h1 className="text-white">
                     {title}
                 </h1>
                 {tableData}
