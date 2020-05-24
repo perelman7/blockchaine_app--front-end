@@ -71,16 +71,9 @@ export class SenderFile extends React.Component {
 
             <div className="col-sm">
               <div className="App">
-                <nav className="navbar pure-menu pure-menu-horizontal">
-                  <h1 className="text-white">IPFS File Upload DApp</h1>
-                </nav>
-        
                 <main className="container">
                   <div className="pure-g">
                     <div className="pure-u-1-1">
-                      <h1>Your Image</h1>
-                      <p>This image is stored on IPFS & The Ethereum Blockchain!</p>
-                      <img src={`http://localhost:8080/ipfs/${this.state.ipfsHash}`} alt=""/>
                       
                       <h2 className="text-white">Upload File</h2>
                       

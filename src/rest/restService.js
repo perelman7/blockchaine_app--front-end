@@ -80,8 +80,6 @@ export class RestServiceApi{
             }
         };
 
-        alert(JSON.stringify(body));
-
         var xhr = new XMLHttpRequest();
         xhr.open('POST', url, false);
         this.initHeaders(xhr);

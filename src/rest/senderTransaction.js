@@ -31,8 +31,8 @@ export class SenderTransaction extends React.Component {
 
     generaSelectTag(){
         return (
-            <div class="col-sm-10">
-                <select class="form-control" onChange={this.handleAccount} value={this.state.selectedAccount}>
+            <div className="col-sm-10">
+                <select className="form-control" onChange={this.handleAccount} value={this.state.selectedAccount}>
                     <option id={-1}>Select account</option>
                     {this.state.listAccounts.map( (row, index) => (
                         <option id={index}>{row}</option>
@@ -59,7 +59,7 @@ export class SenderTransaction extends React.Component {
                         </div>
                     </div>
                     <div className="form-group"> 
-                        <button type="submit" class="btn btn-primary">Send Transaction</button>
+                        <button type="submit" className="btn btn-primary">Send Transaction</button>
                     </div>
                 </form>
             </div>
